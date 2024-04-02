@@ -1,18 +1,19 @@
 import { ComponentProps } from "react";
 
-interface ButtonProps {
+interface ButtonProps extends ComponentProps<"button"> {
   typeBtn: "transparent" | "normal";
   children: React.ReactNode;
 }
 
 interface IconButtonProps extends ComponentProps<"button"> {
   typeBtn: "transparent" | "normal";
+  children: React.ReactNode;
 }
 
 const ButtonTransparent = (props: ButtonProps) => {
   return (
     <button
-      className="bg-black/20 border border-white/10 rounded-md p-1.5"
+      className="bg-black/20 border border-white/10 rounded-md p-1.5 disabled:opacity-50"
       {...props}
     />
   );
@@ -21,13 +22,13 @@ const ButtonTransparent = (props: ButtonProps) => {
 const ButtonNormal = (props: ButtonProps) => {
   return (
     <button
-      className="bg-white/10 border border-white/10 rounded-md p-1.5"
+      className="bg-white/10 border border-white/10 rounded-md p-1.5 disabled:opacity-50"
       {...props}
     />
   );
 };
 
-export function IconButton({ typeBtn, children }: IconButtonProps) {
+export function IconButton({ typeBtn, children, ...props }: IconButtonProps) {
   const buttonComponents = {
     transparent: ButtonTransparent,
     normal: ButtonNormal,
@@ -35,5 +36,9 @@ export function IconButton({ typeBtn, children }: IconButtonProps) {
 
   const CurrentComponent = buttonComponents[typeBtn];
 
-  return <CurrentComponent typeBtn={typeBtn}>{children}</CurrentComponent>;
+  return (
+    <CurrentComponent typeBtn={typeBtn} {...props}>
+      {children}
+    </CurrentComponent>
+  );
 }
